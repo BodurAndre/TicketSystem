@@ -1,19 +1,19 @@
-<#--<!DOCTYPE html>-->
-<#--<html lang="en">-->
-<#--<head>-->
-<#--    <meta charset="UTF-8">-->
-<#--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<#--    <title>Вход</title>-->
-<#--</head>-->
-<#--<body>-->
-<#--<h1>Tikets</h1>-->
-<#--<h4>Авторизация</h4>-->
-<#--<form action="/login" method="post">-->
-<#--    Email: <input type="email" name="username"><br><br>-->
-<#--    Пароль: <input type="password" name="password"><br><br>-->
-<#--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">-->
-<#--    <input type="submit" value="Вход">-->
-<#--</form>-->
-<#--<a href="/registration">Зарегестрироваться</a>-->
-<#--</body>-->
-<#--</html>-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Spring Security Example </title>
+</head>
+<body>
+<div th:if="${param.error}">
+    Invalid username and password.
+</div>
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+<form th:action="@{/login}" method="post">
+    <div><label> User Name : <input type="text" name="username"/> </label></div>
+    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Sign In"/></div>
+</form>
+</body>
+</html>

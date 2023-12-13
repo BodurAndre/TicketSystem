@@ -23,28 +23,31 @@ public class SupportService {
     }
 
     public void saveSupport(Support support, MultipartFile file1, MultipartFile file2, MultipartFile file3) {
-        Image image1;
-        Image image2;
-        Image image3;
-        if(file1.getSize() != 0){
+        Image image1 = null;
+        Image image2 = null;
+        Image image3 = null;
+        if (file1.getSize() != 0) {
             image1 = toImageEntity(file1);
-            image1.setIsPreviewImage(true);
             support.addImageToProduct(image1);
         }
-        if(file2.getSize() != 0){
+        if (file2.getSize() != 0) {
             image2 = toImageEntity(file2);
             support.addImageToProduct(image2);
         }
-        if(file3.getSize() != 0){
+        if (file3.getSize() != 0) {
             image3 = toImageEntity(file3);
             support.addImageToProduct(image3);
         }
 
         log.info("Saving new Support. Tema: {}; User: {}", support.getTema(), support.getUser());
         Support supportFromDb = supportRepository.save(support);
-        supportFromDb.setPreviewImageId(supportFromDb.getImages().get(0).getId());
-        supportRepository.save(support);
+
+        if (!supportFromDb.getImages().isEmpty()) {
+            supportFromDb.setPreviewImageId(supportFromDb.getImages().get(0).getId());
+            supportRepository.save(support);
+        }
     }
+
 
     private Image toImageEntity(MultipartFile file) {
         Image image = new Image();
@@ -61,6 +64,7 @@ public class SupportService {
     }
 
     public void deleteSupport(Long id) {
+        log.info("Deleting Support with ID: {}", id);
         supportRepository.deleteById(id);
     }
 

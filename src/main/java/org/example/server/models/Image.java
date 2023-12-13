@@ -34,7 +34,7 @@ public class Image {
     @Lob
     private byte[] bytes;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Support support;
 
 }
