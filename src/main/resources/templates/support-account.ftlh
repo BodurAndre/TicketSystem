@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +33,7 @@
         }
 
         #user-info span {
-            color: #ff8c00; /* Changed the color of the span */
+            color: #ff8c00;
         }
 
         #user-info a {
@@ -45,7 +46,6 @@
         #user-info a:hover {
             color: #fff;
         }
-
 
         nav {
             background-color: #fff;
@@ -102,7 +102,7 @@
         }
 
         H1 {
-            text-align: center; /* Centered the H1 */
+            text-align: center;
             color: #007bff;
         }
 
@@ -111,27 +111,25 @@
         }
 
         img {
-            margin: 0 5px; /* Added margin to the images */
+            margin: 0 5px;
         }
 
-        div .text {
+        b {
             color: #007bff;
-            margin: 5px 0;
-            font-size: 24px;
         }
 
         hr {
-            margin-top: 20px; /* Adjusted the margin */
+            margin-top: 20px;
             border: 1px solid #ddd;
         }
 
         form {
-            text-align: center; /* Centered the form */
-            margin-top: 20px; /* Adjusted the margin */
+            text-align: center;
+            margin-top: 20px;
         }
 
         input[type="submit"] {
-            background-color: #ff8c00; /* Changed the color */
+            background-color: #ff8c00;
             color: #fff;
             padding: 10px 20px;
             border-radius: 4px;
@@ -140,10 +138,78 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #d17a00; /* Adjusted the hover color */
+            background-color: #d17a00;
+        }
+
+        /* Уменьшение размера опций в выпадающем списке */
+        .dropdown option {
+            font-size: 12px;
+        }
+
+        /* Стили для текстового поля заявки */
+        form input[type="text"] {
+            width: 30%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Стили для выпадающего списка приоритета */
+        form .dropdown {
+            width: 10%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Стили для текстового поля с многострочным вводом */
+        form .text {
+            width: 100%; /* Увеличьте ширину поля с многострочным вводом */
+            height: 100px;
+            padding: 8px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Стили для уменьшения ширины выпадающих списков опций */
+        form .dropdown option {
+            font-size: 12px;
+        }
+
+        /* Очистка float для предотвращения влияния на следующие блоки */
+        form::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Стили для кнопки "Добавить заявку" */
+        form input[type="submit"] {
+            background-color: #ff8c00;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #d17a00;
         }
     </style>
 </head>
+
 <body>
 <header>
     <div id="logo">Ticket</div>
@@ -163,38 +229,10 @@
         <a href="/create" class="orange-link">Создать задачу</a>
         <a href="#" class="orange-link">Запросы</a>
         <a href="#" class="orange-link">Закрытые запросы</a>
-        <a href="/MyAccount" class="orange-link">Мой аккаунт</a>
+        <a href="#" class="orange-link">Мой аккаунт</a>
     </nav>
-    <H1 style="margin-top: 20px; color: #007bff; text-align: center;">Ticket</H1>
-    <H4 style="color: #333; text-align: center;">Подробнее о задаче</H4>
-
-    <div style="margin-top: 20px; text-align: center;">
-        <div class="text">Название заявки:</div> ${support.tema}<br>
-        <div class="text">Сотрудник:</div> ${support.user}<br>
-        <div class="text">Приоритет:</div> ${support.priority}<br>
-        <div class="text">Дата:</div> <span id="date_${support.ID}"></span><br>
-        <div class="text">Статус:</div> ${support.status}<br>
-        <div class="text">Текст заявки:</div> ${support.description}<br>
-
-        <#list images as img>
-            <img src="../images/${img.id}" width="80%"/><br><br>
-        </#list>
-
-        <form action="/support/delete/${support.ID}" method="post" style="margin-top: 20px;">
-            <input type="submit" value="Удалить тикет" style="background-color: #ff8c00; color: #fff; padding: 10px 20px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;"><br>
-        </form>
-    </div>
-    <script>
-        var dateOfCreated = new Date("${support.dateOfCreated}");
-        var formattedDate = formatDate(dateOfCreated);
-
-        document.getElementById("date_${support.ID}").textContent = formattedDate;
-
-        function formatDate(date) {
-            var options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-            return new Intl.DateTimeFormat('en-US', options).format(date);
-        }
-    </script>
+    <H1>Tickets</H1>
 </div>
 </body>
+
 </html>

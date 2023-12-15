@@ -1,85 +1,63 @@
-//package org.example.server.models;
-//
-//import jakarta.persistence.*;
-//import lombok.Data;
-//import org.example.server.models.enums.Role;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
-//
-//import java.time.LocalDateTime;
-//import java.util.Collection;
-//import java.util.HashSet;
-//import java.util.Set;
-//
-//@Entity
-//@Table(name = "users")
-//@Data
-//public class User implements UserDetails {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id")
-//    private Long id;
-//    @Column(name = "email")
-//    private String email;
-//
-//    @Column(name = "phoneNumber")
-//    private String phoneNumber;
-//
-//    @Column(name = "name")
-//    private String name;
-//
-//    @Column(name = "active")
-//    private boolean active;
-//
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "image_id")
-//    private Image avatar;
-//
-//    @Column(name = "password", length = 1000)
-//    private String password;
-//
-//    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-//    @CollectionTable(name = "user_role",
-//    joinColumns = @JoinColumn(name = "user_id"))
-//
-//    @Enumerated(EnumType.STRING)
-//    private Set<Role> roles = new HashSet<>();
-//    private LocalDateTime dateOfCreated;
-//
-//    @PrePersist
-//    private void init(){
-//        dateOfCreated = LocalDateTime.now();
-//    }
-//
-//    //Security
-//
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return roles;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return email;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return active;
-//    }
-//}
+package org.example.server.models;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "USERS")
+public class User {
+
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "PASSWORD")
+    private String password;
+
+    @Column(name = "FIRST_NAME")
+    private String firstName;
+
+    @Column(name = "LAST_NAME")
+    private String lastName;
+
+    @Column(name = "PROFILE_PHOTO_URL")
+    private String profilePhotoUrl;
+
+    @Column(name = "COUNTRY")
+    private String country;
+
+    @Column(name = "OCCUPATION")
+    private String occupation;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "DATE_OF_BIRTH")
+    private Date dateOfBirth;
+
+    @Column(name = "GENDER")
+    private String gender;
+
+    @Column(name = "ROLE")
+    private String role;
+
+    public User(String email, String password, String firstName, String lastName, Date dateOfBirth, String country, String gender) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.country = country;
+        this.gender = gender;
+    }
+}

@@ -32,11 +32,8 @@ public class Support {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "data")
-    private String data;
-
-    @Column(name = "actions")
-    private String actions;
+    @Column(name = "priority")
+    private String priority;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "support")
     private List<Image> images = new ArrayList<>();

@@ -1,5 +1,7 @@
 package org.example.server.controllers;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.example.server.models.Support;
@@ -22,12 +24,22 @@ public class SupportController {
         return "supports";
     }
 
+    @RequestMapping(value = "/create",method = RequestMethod.GET)
+    public String login(){
+        return "create";
+    }
+
     @GetMapping("/support/{id}")
     public String supportsInfo(@PathVariable Long id, Model model){
         Support support = supportService.getSupportById(id);
         model.addAttribute("support", support);
         model.addAttribute("images", support.getImages());
         return "support-info";
+    }
+
+    @RequestMapping(value = "/MyAccount",method = RequestMethod.GET)
+    public String MyAccount(){
+        return "support-account";
     }
 
 
@@ -37,6 +49,9 @@ public class SupportController {
                                 @RequestParam("file3") MultipartFile file3,
                                 @ModelAttribute("support") Support support) {
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String userName = authentication.getName();
+            support.setUser(userName);
             supportService.saveSupport(support, file1, file2, file3);
             return "redirect:/";
         } catch (Exception e) {
