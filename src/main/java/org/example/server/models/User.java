@@ -38,9 +38,6 @@ public class User {
     @Column(name = "COUNTRY")
     private String country;
 
-    @Column(name = "OCCUPATION")
-    private String occupation;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "DATE_OF_BIRTH")
     private Date dateOfBirth;
@@ -50,6 +47,8 @@ public class User {
 
     @Column(name = "ROLE")
     private String role;
+
+
 
     public User(String email, String password, String firstName, String lastName, Date dateOfBirth, String country, String gender) {
         this.email = email;

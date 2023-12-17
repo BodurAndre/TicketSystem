@@ -228,7 +228,7 @@
         <a href="/" class="orange-link">Главная</a>
         <a href="/create" class="orange-link">Создать задачу</a>
         <a href="#" class="orange-link">Запросы</a>
-        <a href="#" class="orange-link">Закрытые запросы</a>
+        <a href="/support/copy" class="orange-link">Закрытые запросы</a>
         <a href="/MyAccount" class="orange-link">Мой аккаунт</a>
     </nav>
     <H1>Tickets</H1>
@@ -257,11 +257,9 @@
         </div>
 
         <div class="form-section">
-            <!-- Скрытые поля -->
             <input type="hidden" name="status" value="На рассмотрение">
+            <input type="hidden" name="active" value="true">
             <input type="hidden" name="support" value="">
-
-            <!-- Кнопка отправки формы -->
             <input type="submit" value="Добавить заявку"><br>
         </div>
     </form>

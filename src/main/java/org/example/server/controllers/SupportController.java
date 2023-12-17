@@ -21,12 +21,12 @@ public class SupportController {
     @GetMapping("/")
     public  String supports(@RequestParam(name = "title",required = false) String title, Model model){
         model.addAttribute("supports", supportService.listSupports(title));
-        return "supports";
+        return "support";
     }
 
     @RequestMapping(value = "/create",method = RequestMethod.GET)
     public String login(){
-        return "create";
+        return "support-create";
     }
 
     @GetMapping("/support/{id}")
@@ -40,6 +40,12 @@ public class SupportController {
     @RequestMapping(value = "/MyAccount",method = RequestMethod.GET)
     public String MyAccount(){
         return "support-account";
+    }
+
+    @GetMapping("/support/copy")
+    public  String SupportCopy(@RequestParam(name = "title",required = false) String title, Model model){
+        model.addAttribute("supports", supportService.listSupports(title));
+        return "support-copy";
     }
 
 

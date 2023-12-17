@@ -20,6 +20,7 @@ public class Support {
     @Column(name = "ID")
     private Long ID;
 
+
     @Column(name = "tema")
     private String tema;
 
@@ -49,4 +50,7 @@ public class Support {
         image.setSupport(this);
         images.add(image);
     }
+
+    @Column(name = "active")
+    private String active;
 }

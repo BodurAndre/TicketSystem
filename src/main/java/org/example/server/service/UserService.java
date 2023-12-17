@@ -12,6 +12,7 @@ public class UserService {
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
+
     public User getUserByEmail(String email){
         User user = userRepository.findUserByEmail(email);
         return user;

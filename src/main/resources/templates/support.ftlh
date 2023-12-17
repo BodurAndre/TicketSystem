@@ -165,7 +165,7 @@
     <div id="user-info">
         <span>Добро пожаловать </span>
         <span>|</span>
-        <a href="#" class="orange-link">Администрирование</a>
+        <a href="/admin/create" class="orange-link">Администрирование</a>
         <span>|</span>
         <a href="#" class="orange-link">Мои настройки</a>
         <span>|</span>
@@ -180,7 +180,7 @@
         </form>
         <a href="/create" class="orange-link">Создать задачу</a>
         <a href="#" class="orange-link">Запросы</a>
-        <a href="#" class="orange-link">Закрытые запросы</a>
+        <a href="/support/copy" class="orange-link">Закрытые запросы</a>
         <a href="/MyAccount" class="orange-link">Мой аккаунт</a>
     </nav>
     <table>
@@ -196,25 +196,27 @@
         </thead>
         <tbody>
         <#list supports as support>
-            <tr class="support">
-                <td><a href="/support/${support.ID}">${support.ID}</a></td>
-                <td><span id="date_${support.ID}"></span></td>
-                <td colspan="5">${support.tema}</td>
-                <td>${support.priority}</td>
-                <td>${support.user}</td>
-                <td>${support.status}</td>
-            </tr>
-            <script>
-                var dateOfCreated = new Date("${support.dateOfCreated}");
-                var formattedDate = formatDate(dateOfCreated);
+            <#if support.active == "true">
+                <tr class="support">
+                    <td><a href="/support/${support.ID}">${support.ID}</a></td>
+                    <td><span id="date_${support.ID}"></span></td>
+                    <td colspan="5">${support.tema}</td>
+                    <td>${support.priority}</td>
+                    <td>${support.user}</td>
+                    <td>${support.status}</td>
+                </tr>
+                <script>
+                    var dateOfCreated = new Date("${support.dateOfCreated}");
+                    var formattedDate = formatDate(dateOfCreated);
 
-                document.getElementById("date_${support.ID}").textContent = formattedDate;
+                    document.getElementById("date_${support.ID}").textContent = formattedDate;
 
-                function formatDate(date) {
-                    var options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-                    return new Intl.DateTimeFormat('en-US', options).format(date);
-                }
-            </script>
+                    function formatDate(date) {
+                        var options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+                        return new Intl.DateTimeFormat('en-US', options).format(date);
+                    }
+                </script>
+            </#if>
         </#list>
         </tbody>
     </table>

@@ -162,7 +162,7 @@
         <a href="/" class="orange-link">Главная</a>
         <a href="/create" class="orange-link">Создать задачу</a>
         <a href="#" class="orange-link">Запросы</a>
-        <a href="#" class="orange-link">Закрытые запросы</a>
+        <a href="/support/copy" class="orange-link">Закрытые запросы</a>
         <a href="/MyAccount" class="orange-link">Мой аккаунт</a>
     </nav>
     <H1 style="margin-top: 20px; color: #007bff; text-align: center;">Ticket</H1>
