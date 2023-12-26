@@ -1,8 +1,10 @@
 package org.example.server.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.server.models.Image;
+import org.example.server.repositories.ImageRepository;
 import org.springframework.stereotype.Service;
 import org.example.server.models.Support;
 import org.example.server.repositories.SupportRepository;
@@ -10,12 +12,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class SupportService {
     private final SupportRepository supportRepository;
+    private final ImageRepository imageRepository;
 
     public List<Support> listSupports (String title) {
         if(title != null) return supportRepository.findByTema(title);
@@ -49,7 +53,7 @@ public class SupportService {
     }
 
 
-    private Image toImageEntity(MultipartFile file) {
+    public Image toImageEntity(MultipartFile file) {
         Image image = new Image();
         image.setName(file.getName());
         image.setOriginFileName(file.getOriginalFilename());
@@ -68,7 +72,47 @@ public class SupportService {
         supportRepository.deleteById(id);
     }
 
+    public void deleteImage(Long id) {
+        log.info("Deleting Image with ID: {}", id);
+        imageRepository.deleteById(id);
+    }
+
+    public void resumeSupport(Long supportId) {
+        Support support = getSupportById(supportId);
+        log.info("Resuming support with id: {}", supportId);
+        support.setActive("true");
+        support.setStatus("Возобновлено");
+        changeSupport(support);
+    }
+
     public Support getSupportById(Long id) {
         return supportRepository.findById(id).orElse(null);
+    }
+
+    public void hideSupport(Long id) {
+        Optional<Support> supportOptional = supportRepository.findById(id);
+        if (supportOptional.isPresent()) {
+            Support support = supportOptional.get();
+            support.setActive("false");
+            support.setStatus("Выполнено");
+            supportRepository.save(support);
+        } else {
+            throw new EntityNotFoundException("Support with id " + id + " not found");
+        }
+    }
+
+    public void supplementSupport(Long id, String string) {
+        Optional<Support> supportOptional = supportRepository.findById(id);
+        if (supportOptional.isPresent()) {
+            Support support = supportOptional.get();
+            support.setText(string);
+            supportRepository.save(support);
+        } else {
+            throw new EntityNotFoundException("Support with id " + id + " not found");
+        }
+    }
+
+    public void changeSupport(Support Support){
+        supportRepository.save(Support);
     }
 }

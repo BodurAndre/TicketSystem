@@ -36,6 +36,9 @@ public class Support {
     @Column(name = "priority")
     private String priority;
 
+    @Column(name = "text")
+    private String text;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "support")
     private List<Image> images = new ArrayList<>();
     private Long previewImageId;

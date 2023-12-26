@@ -24,15 +24,13 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/user/**").hasRole("USER")
-                .requestMatchers("/login","/register").permitAll()
+                .requestMatchers("/login","/register","/js/**", "/css/**").permitAll()
                 .anyRequest().authenticated();
         http
                 .formLogin()
-                .loginPage("/login");
-        http
-                .csrf()
-                .ignoringRequestMatchers("support/create", "/support/delete/**");
+                .loginPage("/login")
+                .defaultSuccessUrl("/");
+
         return http.build();
     }
 

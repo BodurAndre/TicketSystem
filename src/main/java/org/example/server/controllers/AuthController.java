@@ -38,22 +38,17 @@ public class AuthController {
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public String createNewUser(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("user")User user){
-
         try {
-
             user.setRole("USER");
-
             User newUser = userService.createUser(user);
             if(newUser == null){
                 return "redirect:/register?error";
             }
-
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword()));
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(authentication);
             HttpSession session = request.getSession(true);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,securityContext);
-
             return "redirect:/";
 
         } catch (Exception e){

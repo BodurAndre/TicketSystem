@@ -14,7 +14,6 @@ import java.util.Date;
 @Entity
 @Table(name = "USERS")
 public class User {
-
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -47,8 +46,6 @@ public class User {
 
     @Column(name = "ROLE")
     private String role;
-
-
 
     public User(String email, String password, String firstName, String lastName, Date dateOfBirth, String country, String gender) {
         this.email = email;
