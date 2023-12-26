@@ -1,5 +1,8 @@
 package org.example.server.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,40 +17,56 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 public class SupportController {
     private final SupportService supportService;
 
     @GetMapping("/")
-    public  String supports(@RequestParam(name = "title",required = false) String title, Model model){
+    public String supports(@RequestParam(name = "title",required = false) String title, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        String userRole = authentication.getAuthorities().toString();
         model.addAttribute("supports", supportService.listSupports(title));
-        return "support";
+        model.addAttribute("userName", userName);
+        if(userRole.equals("[ROLE_ADMIN]")){
+            return "admin/support";
+        }
+        return "support/support";
     }
 
     @RequestMapping(value = "/create",method = RequestMethod.GET)
-    public String login(){
-        return "support-create";
+    public String create(HttpServletRequest request, HttpServletResponse response, Model model){
+        Support support = new Support();
+        model.addAttribute("support",support);
+        return "support/support-create";
     }
+
 
     @GetMapping("/support/{id}")
     public String supportsInfo(@PathVariable Long id, Model model){
         Support support = supportService.getSupportById(id);
         model.addAttribute("support", support);
         model.addAttribute("images", support.getImages());
-        return "support-info";
+        return "support/support-info";
     }
 
-    @RequestMapping(value = "/MyAccount",method = RequestMethod.GET)
-    public String MyAccount(){
-        return "support-account";
+    @GetMapping("/support/delete/{id}")
+    public String supportDelete(@PathVariable Long id, Model model){
+        Support support = supportService.getSupportById(id);
+        model.addAttribute("support", support);
+        model.addAttribute("images", support.getImages());
+        return "support/support-delete";
     }
 
     @GetMapping("/support/copy")
     public  String SupportCopy(@RequestParam(name = "title",required = false) String title, Model model){
         model.addAttribute("supports", supportService.listSupports(title));
-        return "support-copy";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        model.addAttribute("userName", userName);
+        return "support/support-copy";
     }
-
 
     @PostMapping(value = "/support/create")
     public String createSupport(@RequestParam("file1") MultipartFile file1,
@@ -66,11 +85,49 @@ public class SupportController {
         }
     }
 
+    @PostMapping("/support/hide/{id}")
+    @Transactional
+    public String hideSupport(@PathVariable Long id){
+        supportService.hideSupport(id);
+        return "redirect:/";
+    }
+
     @PostMapping("/support/delete/{id}")
     @Transactional
     public String deleteSupport(@PathVariable Long id){
-        System.out.println("Deleting support with id: " + id);
         supportService.deleteSupport(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/support/delete/image/{id}")
+    @Transactional
+    public String deleteImage(@PathVariable Long id){
+        supportService.deleteImage(id);
+        return "redirect:/";
+    }
+
+    @PostMapping(value = "/support/edit/{ID}")
+    public String editSupport(@PathVariable Long ID,
+                              @RequestParam("tema") String tema,
+                              @RequestParam("priority") String priority,
+                              @RequestParam("status") String status,
+                              @RequestParam("description") String description) {
+        log.info("Changing support with id: {}", ID, tema, priority, status, description);
+        Support support = supportService.getSupportById(ID);
+        support.setTema(tema);
+
+        if (!description.isEmpty()) {
+            support.setDescription(description);
+        }
+        support.setPriority(priority);
+        support.setStatus(status);
+        if(status.equals("Закрыта")){
+            support.setActive("false");
+        }
+        else {
+            support.setActive("true");
+        }
+        supportService.changeSupport(support);
         return "redirect:/";
     }
 }
